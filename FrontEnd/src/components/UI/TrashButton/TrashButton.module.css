@@ -1,0 +1,17 @@
+.TrashButton {
+  font-size: 25px;
+  transition: 0.5s;
+  /* color:#db6565; */
+}
+.text {
+  position: relative;
+  top: 3px;
+  text-decoration: underline;
+  font-size: 12px;
+}
+
+.TrashButton:hover, .text:hover {
+  cursor: pointer;
+  color:#9f0f0f;
+  /* font-size: 30px; */
+}

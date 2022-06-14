@@ -1,0 +1,4 @@
+.NavLink .active {
+  border-bottom: solid 1px rgb(0,0,0,0.24);
+  font-size: 20px;
+}

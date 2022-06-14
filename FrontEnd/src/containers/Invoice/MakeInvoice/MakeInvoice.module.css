@@ -1,0 +1,13 @@
+.addAnother {
+  border: 1px dashed black;
+  cursor: pointer;
+  user-select: none;
+}
+
+.item {
+  border-top: 1px dashed black;
+}
+
+.title {
+  font-size: 1.8em;
+}

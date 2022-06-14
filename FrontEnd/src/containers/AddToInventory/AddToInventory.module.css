@@ -1,0 +1,18 @@
+.addToInventory {
+  margin-top: 15px;
+}
+
+.TitleContainer{
+  margin-top: 15px;
+  text-align: center;
+
+}
+
+.Title {
+  padding-top: 10px;
+  font-size: 20px;
+}
+
+.AddButton {
+  text-align: center;
+}

@@ -1,0 +1,148 @@
+PUT http://localhost:3005/addCompany HTTP/1.1
+content-type: application/json
+
+{
+  "city": "Downey",
+  "description": "A mossy studio that makes furniture",
+  "id": "32296",
+  "name": "Moss Studio",
+  "phone": "1111122",
+  "state": "California",
+  "street": "9334 Rives ave",
+  "zipCode": "90240"
+}
+
+
+###
+
+PUT http://localhost:3005/addSeller HTTP/1.1
+content-type: application/json
+
+{
+    "id": "32126548",
+    "name": "Joe Shmoe",
+    "city": "downey",
+    "street": "123 corral ave.",
+    "zipCode": "91235",
+    "state": "Ca",
+    "phone": 6548981234
+}
+
+###
+PUT http://localhost:3005/addInventory HTTP/1.1
+content-type: application/json
+
+{
+    "id": "32126548",
+    "type": "Staple Gun Part",
+    "brand": "BEA",
+    "quantity": "6",
+    "name": "Piston",
+    "description": "Piston for BEA Part"
+}
+
+###
+
+PUT http://localhost:3005/addInvoice HTTP/1.1
+content-type: application/json
+
+{
+    "seller": 3216548,
+    "company": 32296,
+    "taxRate": "4",
+    "items": [
+        {
+            "id": 3,
+            "quantity": "4",
+            "price": "33"
+        }
+    ],
+    "id": 336717,
+    "date": "2022-04-21",
+    "hasPaid": false,
+    "withInfo": {
+        "seller": {
+            "id": 3216548,
+            "name": "Jonathan Shmoe",
+            "city": "Orange",
+            "street": "123 coole ave.",
+            "zipCode": "91235",
+            "state": "Ca",
+            "phone": 1234567891
+        },
+        "company": {
+            "city": "Downey",
+            "description": "A mossy studio that makes furniture",
+            "id": 32296,
+            "name": "Moss Studio",
+            "phone": 1111122,
+            "state": "California",
+            "street": "9334 Rives ave",
+            "zipCode": 90240
+        },
+        "items": [
+            {
+                "type": "Staples_Guns",
+                "brand": "Unicatch",
+                "quantity": "4",
+                "name": "Brad",
+                "description": "Unicatch Brad",
+                "id": 3,
+                "price": "33"
+            }
+        ]
+    },
+    "updateInventory": true
+}
+
+###
+
+PATCH http://localhost:3005/updateInvoiceStatus HTTP/1.1
+content-type: application/json
+
+{
+  "status": true,
+  "id": "336717"
+}
+
+
+###
+###
+
+PATCH http://localhost:3005/updateInventoryQuantities HTTP/1.1
+content-type: application/json
+
+[
+  {
+    "offset": "100",
+    "id": "1"
+  },
+  {
+    "offset": "100",
+    "id": "2"
+  }
+]
+
+###
+
+PATCH http://localhost:3005/updateDoc HTTP/1.1
+content-type: application/json
+
+{
+  "id": 1,
+  "name": 3,
+  "brand": "joasd",
+  "dbType": "inventory"
+}
+
+###
+
+DELETE http://localhost:3005/removeDocs HTTP/1.1
+content-type: application/json
+
+{
+  "dbType": "inventory",
+  "attributeLabel": "brand",
+  "attributeValue": "joasd",
+  "attributeValueType": "string"
+}

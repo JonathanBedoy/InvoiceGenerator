@@ -1,0 +1,14 @@
+.redLabel, .greenLabel {
+  height: 15px;
+  width: 15px;
+  fill: rgb(219, 101, 101);
+}
+
+.greenLabel {
+  fill: lightgreen;
+}
+
+.label {
+  font-size: 15px;
+  line-height: 1;
+}

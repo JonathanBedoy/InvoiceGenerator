@@ -1,0 +1,77 @@
+.overFlowContainer {
+  overflow-x:auto;
+  overflow-y:auto;
+  max-height: 74vh;
+}
+.invoiceContainer {
+  border: 1px solid lightgray;
+  /* max-width: 8.5in!important;
+  min-width: 8.5in!important; */
+  width: 21cm;
+  height: 29.7cm;
+}
+.paid {
+  /* background-color: aquamarine; */
+  color: olive;
+  font-size: 50px;
+  text-align: center;
+  text-decoration: underline;
+}
+.invoiceText {
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.adressHeader {
+  line-height: 20%;
+}
+
+.soldTo {
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.soldToInfo {
+  font-size: 14px;
+  line-height: 20%;
+}
+
+.invoiceInfo {
+  font-size: 14px;
+}
+
+.table {
+
+  width: 100%;
+  /* background-color: rgb(226, 226, 226); */
+  border-right: 1px solid rgb(154, 154, 154);
+  border-bottom: 1px solid rgb(154, 154, 154);
+}
+
+.typeCols {
+  background-color: rgb(226, 226, 226);
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.typeColsInfo {
+  font-size: 15px;
+  border-left: 1px solid rgb(154, 154, 154);
+  border-top: 1px solid rgb(154, 154, 154);
+}
+
+.totalInfo {
+  font-size: 14px;
+  /* border-left: 1px solid rgb(154, 154, 154); */
+  border-right: 1px solid rgb(154, 154, 154);
+}
+
+.actualTotal {
+  font-size: 14px;
+  font-weight: 700;
+}
+.actualTotalInfo {
+  background-color: rgb(226, 226, 226);
+  border: 1px solid rgb(154, 154, 154);
+  border-left: 0;
+}

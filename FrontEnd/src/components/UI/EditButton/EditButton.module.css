@@ -1,0 +1,8 @@
+.EditButton {
+  font-size: 30px;
+  user-select: none;
+}
+
+.EditButton:hover {
+  cursor: pointer;
+}

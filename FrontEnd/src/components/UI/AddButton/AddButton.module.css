@@ -1,0 +1,9 @@
+.AddButton {
+  font-size: 25px;
+  transition: 1s;
+}
+
+.AddButton:hover {
+  cursor: pointer;
+  /* font-size: 30px; */
+}
