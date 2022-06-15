@@ -18,7 +18,7 @@ Inventory system with the capability of generating invoices and keeping track of
 Inventory Invoice System web app uses the following tech:
 
 - [React Js] - Progressive JavaScript Framework
-- [React Bootstrap] - Vue implementation of Bootstrap
+- [React Bootstrap] - React implementation of Bootstrap
 - [Node.js] - Backend JavaScript runtime
 - [NeDB] - Mongo based file storage
 - [Express] - Node.js network framework
