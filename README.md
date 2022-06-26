@@ -6,6 +6,12 @@ Inventory system with the capability of generating invoices and keeping track of
 
 ### Try it out [here](https://inventory.jonathanbedoy.com)
 
+##### Guest Login: 
+```
+- user: guest
+- password: password
+```
+
 ## Features:
 
 - Store Item Data
