@@ -1,5 +1,8 @@
 .TrashButton {
   font-size: 25px;
+  display: flex;
+  justify-content: center;
+  align-content: center;
   transition: 0.5s;
   /* color:#db6565; */
 }

@@ -10,13 +10,13 @@ const DownloadButton = (props) => {
 
   const [hovering, setHovering] = useState(false)
 
-  let iconToShow = !hovering ? <BsDownload /> : <BsDownload />
+  // let iconToShow = !hovering ? <BsDownload /> : <BsDownload />
 
   return (
     <div className={styles.button + ' ' + props.className}>
       <span onClick={props.btnClick} onMouseEnter={() => setHovering(true)} onMouseLeave={() => setHovering(false)}>
         <BsDownload />
-        {iconToShow}
+        {/* {iconToShow} */}
       </span>
     </div>
 

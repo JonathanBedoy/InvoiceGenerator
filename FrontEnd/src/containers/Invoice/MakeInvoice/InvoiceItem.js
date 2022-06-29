@@ -2,8 +2,10 @@ import React, { useEffect, useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import style from './MakeInvoice.module.css';
 import InvoiceInputSlot from './InvoiceInputSlot'
+import TrashButton from "../../../components/UI/TrashButton/TrashButton";
 
 const InvoiceItem = (props) => {
+  const trashBtn = <TrashButton size={'1.2rem'} btnClick={() => props.deleteItemHandler(props.itemNumber)} caution={false} cautionText={'This will PERMANENTLY REMOVE the invoice!'} />
 
   const [item, setItem] = useState({
     item: null,
@@ -31,10 +33,11 @@ const InvoiceItem = (props) => {
 
   return (
     <div>
-      <Row className={`mt-3 d-flex justify-content-center`}>
-        <Col className={` ${style.item} col-5 col-xs-12 pt-2 pr-0 text-center`}>
+      <Row className={` ${style.title} mt-3 p-0 d-flex justify-content-center`}>
+        <Col className={` ${style.item} p-0 m-0 col-6 col-xs-11 pt-1 pr-0 text-center`}>
           Item # {props.itemNumber + 1}
         </Col>
+        <Col className={` ${style.item} p-0 m-0 col-1 col-xs-1 pt-0 pr-0 text-center`}>{trashBtn}</Col>
       </Row>
 
       <InvoiceInputSlot

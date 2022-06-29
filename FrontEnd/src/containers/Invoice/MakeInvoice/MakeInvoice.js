@@ -1,3 +1,11 @@
+// TODO: if passed an id, and that id exists in the invoiceList.
+    // Then we should pre-Populate that invoice Info here.
+    // Also the btn should say cancel or save changes
+
+// In terms of how that will be stored in the DB...
+// we have to recreate withInfo obj
+// if item does not exist, then do not include it
+
 import React, {  useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import style from './MakeInvoice.module.css'
@@ -43,6 +51,14 @@ const MakeInvoice = (props) => {
   const addAnotherItem = () => {
     setItems(a => {
       return [...a, {}]
+    })
+  }
+
+  const removeItemHandler = (i) => {
+    console.log('removing: ', items[i], i)
+    setItems(state => {
+      state.splice(i, 1)
+      return [...state]
     })
   }
 
@@ -131,6 +147,7 @@ const MakeInvoice = (props) => {
   const itemsToShow = items.map((ele, index) => {
     return (
       <InvoiceItem
+        deleteItemHandler={removeItemHandler}
         options={inventory}
         itemNumber={index}
         valueUpdate={updateItem}

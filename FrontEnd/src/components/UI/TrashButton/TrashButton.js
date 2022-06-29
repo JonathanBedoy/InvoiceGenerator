@@ -30,7 +30,7 @@ const TrashButton = (props) => {
   // let textForCaution = 'This will PERMANENTLY REMOVE the company and all their invoices!'
 
   return (
-    <div className='pt-1'>
+    <div className=''>
       <CautionModal
         show={showCautionModal}
         cautionText={props.cautionText}
@@ -46,6 +46,9 @@ const TrashButton = (props) => {
       onMouseLeave={() => changeIcon(true)}
       >
         <span 
+        style={{
+          fontSize: props.size ? props.size : '1.5rem'
+        }}
         >
           {hovering ? <FaRegTrashAlt /> : <FaTrashAlt />}
         </span>
