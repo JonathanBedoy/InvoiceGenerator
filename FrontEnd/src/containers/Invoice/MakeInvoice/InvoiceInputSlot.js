@@ -7,19 +7,20 @@ const InvoiceInputSlot = (props) => {
   let inputType = <InputField />
 
   const handleChangeInput = (a, b) => {
+    // console.log(a)
     props.valueUpdate(a, props)
   }
-
+  // console.log(props.defaultValue)
   switch (props.type) {
     case 'dropdown':
-      inputType = <DropDown valueUpdate={handleChangeInput} options={props.options} />
+      inputType = <DropDown valueUpdate={handleChangeInput} defaultValue={props.defaultValue ? props.defaultValue : ''} options={props.options} />
       break
     case 'number':
-      inputType = <InputField type='number' valueUpdate={handleChangeInput} />
+      inputType = <InputField type='number' defaultValue={props.defaultValue ? props.defaultValue : false} valueUpdate={handleChangeInput} />
       break
 
     case 'text':
-      inputType = <InputField type='text' valueUpdate={handleChangeInput} />
+      inputType = <InputField type='text' defaultValue={props.defaultValue ? props.defaultValue : false} valueUpdate={handleChangeInput} />
       break
 
     default:

@@ -7,11 +7,14 @@ import TrashButton from "../../../components/UI/TrashButton/TrashButton";
 const InvoiceItem = (props) => {
   const trashBtn = <TrashButton size={'1.2rem'} btnClick={() => props.deleteItemHandler(props.itemNumber)} caution={false} cautionText={'This will PERMANENTLY REMOVE the invoice!'} />
 
+  // console.log(props.info)
+  // TODO FILL THIS OUT
   const [item, setItem] = useState({
-    item: null,
-    quantity: null,
-    price: null
+    item: props.defaultValue ? props.defaultValue.value  : null,
+    quantity: props.defaultQuantity ? props.defaultQuantity : null,
+    price: props.defaultPrice ? props.defaultPrice : null
   })
+  // console.log(item.item, item.quantity, item.price, props.defaultValue ? props.defaultValue.value: 'np')
 
   const updateHandler = (a, b) => {
     // console.log(b)
@@ -23,12 +26,32 @@ const InvoiceItem = (props) => {
         state[b.label.toLowerCase()] = temp
       return {...state}
     })
-    // props.valueUpdate(a, {...props, label: 'item'})
+    props.valueUpdate(item, {...props, label: 'item'})
   }
 
+  // useEffect(() => {
+  //   // console.log('HEREREREERERERR',item.item)
+  //   if (item.item)
+  //     props.valueUpdate(item, {...props, label: 'item'})
+  // }, [item]) //eslint-disable-line
+
   useEffect(() => {
-    props.valueUpdate(item, {...props, label: 'item'})
-  }, [item]) //eslint-disable-line
+    // console.log('changing local state', props.info, item)
+    setItem( state => {
+       return {
+          item: props.defaultValue.value,
+          quantity: props.defaultQuantity ? props.defaultQuantity : state.quantity,
+          price: props.defaultPrice ? props.defaultPrice : state.defaultPrice
+        }
+    })
+  }, [props.defaultValue, props.defaultQuantity, props.defaultPrice])
+
+//   let deafultVal = {label: 'Misnx', value: {brand: "Nia Lashes By Denise",
+// description: "Boss Babe",
+// id: 111820,
+// name: "",
+// quantity: -4,
+// type: "Silk"}}
   
 
   return (
@@ -41,15 +64,18 @@ const InvoiceItem = (props) => {
       </Row>
 
       <InvoiceInputSlot
+        defaultValue={props.defaultValue ? props.defaultValue : ''}
         valueUpdate={updateHandler}
         options={props.options}
         label={'Item'}
         type='dropdown' />
       <InvoiceInputSlot
+        defaultValue={props.defaultQuantity ? props.defaultQuantity : false}
         valueUpdate={updateHandler}
         label={'Quantity'}
         type='number' />
       <InvoiceInputSlot
+        defaultValue={props.defaultPrice ? props.defaultPrice : false}
         valueUpdate={updateHandler}
         label={'Price'}
         type='number' />

@@ -20,6 +20,10 @@ import { addInvoice } from "../../../store/populateStore/populateStore";
 import SecondaryNavBar from "../../../components/UI/NavigationBar/SecondaryNavBar/SecondaryNavBar";
 const MakeInvoice = (props) => {
 
+  const invoiceId = props.match.params.id
+  if (invoiceId !== undefined) {
+    console.log('weve got to preload invoice info', invoiceId)
+  }
   const dispatch = useDispatch(InvoiceActions)
 
   const companies = useSelector(state => {
@@ -38,13 +42,22 @@ const MakeInvoice = (props) => {
     })
   })
   const invoices = useSelector(state => state.invoice.invoices)
-  const [invoiceInfo, setInvoiceInfo] = useState({
-    company: null,
-    po: null,
-    seller: null,
-    taxRate: 0,
-    date: new Date(new Date().toLocaleDateString('en-ca')),
-    dateVal: new Date().toLocaleDateString('en-ca')
+  const invoiceExistData = useSelector(state => {
+    return state.invoice.invoices.filter(ele => {
+      return parseInt(ele.id) === parseInt(invoiceId)
+    })
+  }) 
+  // console.log(invoiceExistData)
+  const [invoiceInfo, setInvoiceInfo] = useState(() => {
+    let invoiceTemplate = {
+      company: null,
+      po: null,
+      seller: null,
+      taxRate: 0,
+      date: new Date(new Date().toLocaleDateString('en-ca')),
+      dateVal: new Date().toLocaleDateString('en-ca')
+    }
+    return invoiceTemplate
   })
   const [items, setItems] = useState([{}])
 
@@ -58,6 +71,8 @@ const MakeInvoice = (props) => {
     console.log('removing: ', items[i], i)
     setItems(state => {
       state.splice(i, 1)
+      // return state
+      console.log(state)
       return [...state]
     })
   }
@@ -67,6 +82,8 @@ const MakeInvoice = (props) => {
       return { ...state, 'po': updatedItem }
     })
     else if (info.label.toLowerCase() === 'item') {
+      // console.log('changing Item', updatedItem)
+      // console.log(updatedItem)
       setItems(state => {
         state[info.itemNumber] = updatedItem
         return [...state]
@@ -143,16 +160,24 @@ const MakeInvoice = (props) => {
     }
   }
 
+// console.log(inventory)
+  let itemsToShow = items.map((ele, index) => {
+    // console.log(ele)
+    const eleId = ele.item ? ele.item.id+index : index
 
-  const itemsToShow = items.map((ele, index) => {
+    const defaultValueDropDown = ele.item && inventory.length > 0 ? inventory.find(currItem => currItem.label === ele.item.description) : false
+    // console.log(defaultValueDropDown)
     return (
       <InvoiceItem
+        defaultValue={defaultValueDropDown}
+        defaultQuantity={ele.quantity}
+        defaultPrice={ele.price}
         deleteItemHandler={removeItemHandler}
         options={inventory}
         itemNumber={index}
         valueUpdate={updateItem}
         info={ele}
-        key={index}
+        key={eleId}
       />
     )
   })

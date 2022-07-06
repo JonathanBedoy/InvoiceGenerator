@@ -7,9 +7,13 @@ const options = [
   { value: 'vanilla', label: 'Vanilla' }
 ]
 
-const DropDown = (props) => {
 
-  return <Select onChange={props.valueUpdate} options={props.options ? props.options : options} />
+
+const DropDown = (props) => {
+  // console.log(props.defaultValue)
+
+  return props.defaultValue ? (<Select value={props.defaultValue ? props.defaultValue : ''} onChange={props.valueUpdate} options={props.options ? props.options : options} />) : (<Select onChange={props.valueUpdate} options={props.options ? props.options : options}  />)
 }
+// value default value
 
 export default DropDown;

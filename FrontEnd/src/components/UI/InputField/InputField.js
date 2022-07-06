@@ -20,7 +20,7 @@ const InputField = (props) => {
       <FormControl
         placeholder={props.placeholder ? props.placeholder : ""}
         type={props.type ? props.type : ""}
-        defaultValue={props.value}
+        defaultValue={props.defaultValue ? props.defaultValue : props.value}
         id={props.label}
         aria-describedby="basic-addon3"
       />
