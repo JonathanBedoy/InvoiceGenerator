@@ -6,7 +6,7 @@
 // we have to recreate withInfo obj
 // if item does not exist, then do not include it
 
-import React, {  useState } from "react";
+import React, {  useEffect, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import style from './MakeInvoice.module.css'
 import InvoiceItem from "./InvoiceItem";
@@ -15,17 +15,13 @@ import { useDispatch, useSelector } from "react-redux";
 import Button from "../../../components/UI/Button/Button";
 import { withRouter } from "react-router-dom";
 import { InvoiceActions } from "../../../store/invoiceSlice";
-import { generateInvoiceNumber } from "../../../store/InvoiceFunctions/InvoiceFunctions";
+import { generateInvoiceNumber, generatePrepulateEditInvoiceInfo } from "../../../store/InvoiceFunctions/InvoiceFunctions";
 import { addInvoice } from "../../../store/populateStore/populateStore";
 import SecondaryNavBar from "../../../components/UI/NavigationBar/SecondaryNavBar/SecondaryNavBar";
 const MakeInvoice = (props) => {
 
-  const invoiceId = props.match.params.id
-  if (invoiceId !== undefined) {
-    console.log('weve got to preload invoice info', invoiceId)
-  }
   const dispatch = useDispatch(InvoiceActions)
-
+  
   const companies = useSelector(state => {
     return state.company.company.map(ele => {
       return { value: ele, label: ele.name }
@@ -42,14 +38,49 @@ const MakeInvoice = (props) => {
     })
   })
   const invoices = useSelector(state => state.invoice.invoices)
-  const invoiceExistData = useSelector(state => {
-    return state.invoice.invoices.filter(ele => {
-      return parseInt(ele.id) === parseInt(invoiceId)
-    })
-  }) 
+  // check if there is an invoice to edit.
+  // if there is, then we should get the info of that invoice and prepopulate the page
+  const invoiceId = props.match.params.id
+  const [edit, setEdit] = useState(false)
+  // TODO: prepopulate has to get the actual info (this is test)
+  let prepopulateInfo = undefined
+  
+  // console.log(invoices, prepopulateInfo, generatePrepulateEditInvoiceInfo(invoices, invoiceId))
+  useEffect(() => {
+    if (invoiceId !== undefined) {
+      prepopulateInfo = generatePrepulateEditInvoiceInfo(invoices, invoiceId)
+      
+      setEdit(prepopulateInfo !== undefined)
+      if (edit) {
+        console.log(prepopulateInfo.invoiceInfo, 'SETTING INVOICEINFO')
+        setItems(prepopulateInfo.items)
+        setInvoiceInfo(() => { return {
+          company: prepopulateInfo.invoiceInfo.company,
+          po: prepopulateInfo.invoiceInfo.po,
+          seller: prepopulateInfo.invoiceInfo.seller,
+          taxRate: prepopulateInfo.invoiceInfo.taxRate,
+          date: prepopulateInfo.invoiceInfo.date,
+          dateVal: prepopulateInfo.invoiceInfo.dateVal
+        }})
+        setDefaultCompany({
+          value: prepopulateInfo.invoiceInfo.company,
+          label: prepopulateInfo.invoiceInfo.company.name
+        })
+        console.log(invoiceInfo)
+      }
+    }
+  
+  }, [invoices, edit])
+  
+  if (invoiceId !== undefined) {
+    console.log('weve got to preload invoice info', invoiceId)
+  }
   // console.log(invoiceExistData)
+  const [defaultCompany, setDefaultCompany] = useState(undefined)
   const [invoiceInfo, setInvoiceInfo] = useState(() => {
-    let invoiceTemplate = {
+    let invoiceTemplate
+    if (edit && prepopulateInfo !== undefined) invoiceTemplate = prepopulateInfo.invoiceInfo
+    else invoiceTemplate = {
       company: null,
       po: null,
       seller: null,
@@ -59,14 +90,16 @@ const MakeInvoice = (props) => {
     }
     return invoiceTemplate
   })
-  const [items, setItems] = useState([{}])
-
+  const [items, setItems] = useState(() => {
+    // console.log(edit ? prepopulateInfo.items : [{}])
+    return edit && prepopulateInfo !== undefined ? prepopulateInfo.items : [{}]
+  })  
   const addAnotherItem = () => {
     setItems(a => {
       return [...a, {}]
     })
   }
-
+  
   const removeItemHandler = (i) => {
     console.log('removing: ', items[i], i)
     setItems(state => {
@@ -76,7 +109,7 @@ const MakeInvoice = (props) => {
       return [...state]
     })
   }
-
+  
   const updateItem = (updatedItem, info) => {
     if (info.type === 'text') setInvoiceInfo(state => {
       return { ...state, 'po': updatedItem }
@@ -96,6 +129,7 @@ const MakeInvoice = (props) => {
       })
     } else {
       setInvoiceInfo(state => {
+        console.log(updatedItem)
         state[info.label.toLowerCase()] = updatedItem.value
         return { ...state }
       })
@@ -147,10 +181,14 @@ const MakeInvoice = (props) => {
     }
     invoiceGenerated.items = invoiceGenerated.items.filter(ele => ele !== null)
     if (invoiceGenerated.items.length === 0) {
-      // tell them to enter an item
+      // TODO: tell them to enter an item
     } else {
-      invoiceGenerated.id = generateInvoiceNumber(invoices)
-      dispatch(addInvoice({...invoiceGenerated}, invoices))
+      // if this is an edit, then we reuse id number
+      if (edit) invoiceGenerated.id = invoiceId
+      else invoiceGenerated.id = generateInvoiceNumber(invoices)
+      // TODO: make sure that the invoice is then updated in our local store
+      // if (edit) dispatch(editInvoice{...invoiceGenerated})
+      dispatch(addInvoice({...invoiceGenerated}, invoices, edit))
       // dispatch(InvoiceActions.makeInvoice({ ...invoiceGenerated }))
 
 
@@ -166,7 +204,7 @@ const MakeInvoice = (props) => {
     const eleId = ele.item ? ele.item.id+index : index
 
     const defaultValueDropDown = ele.item && inventory.length > 0 ? inventory.find(currItem => currItem.label === ele.item.description) : false
-    // console.log(defaultValueDropDown)
+    // console.log(defaultValueDropDown, ele.item, inventory.length)
     return (
       <InvoiceItem
         defaultValue={defaultValueDropDown}
@@ -190,20 +228,17 @@ const MakeInvoice = (props) => {
         // component1={editBtn}
         // component2={trashBtn}
       />
-      {/* <Row>
-        <Col className={` my-3 text-center ${style.title}`}>
-          Create Invoice
-        </Col>
-      </Row> */}
+
       <InvoiceInputSlot
         label='Company'
+        defaultValue={edit && invoiceInfo.company !== null ? {label: invoiceInfo.company.name, value:invoiceInfo.company} : undefined}
         valueUpdate={updateItem}
         options={companies}
         type='dropdown'
       />
-      <InvoiceInputSlot label='Seller' valueUpdate={updateItem} options={seller} type='dropdown' />
+      <InvoiceInputSlot label='Seller' defaultValue={edit && invoiceInfo.seller !== null ? {label: invoiceInfo.seller.name, value:invoiceInfo.seller} : undefined} valueUpdate={updateItem} options={seller} type='dropdown' />
 
-      <InvoiceInputSlot label='PO' valueUpdate={updateItem} type='text' />
+      <InvoiceInputSlot label='PO' defaultValue={edit ? invoiceInfo.po : undefined} valueUpdate={updateItem} type='text' />
 
       <Row className={` mt-3 d-flex justify-content-center`}>
         <Col xs={4} sm={2} md={2} lg={1} className={` col-1  pr-0 text-right`}>
@@ -229,7 +264,7 @@ const MakeInvoice = (props) => {
           />
         </Col>
       </Row>
-      <InvoiceInputSlot label='Tax Rate' valueUpdate={updateItem} type='number' />
+      <InvoiceInputSlot label='Tax Rate'  defaultValue={edit ? invoiceInfo.taxRate : undefined} valueUpdate={updateItem} type='number' />
 
       <div className={`  mt-3 `}>{itemsToShow}</div>
 

@@ -71,6 +71,30 @@ const invoiceSlice = createSlice({
   name: "counter",
   initialState,
   reducers: {
+    editInvoice(state, action) {
+      const { payload } = action
+      const { seller = '',
+        company = '',
+        po = '',
+        taxRate = 0,
+        items = [],
+        id = generateInvoiceNumber(state.invoices),
+        date = '2020-05-31',
+        hasPaid = false,
+        withInfo = {}
+      } = payload
+
+      let index = state.invoices.findIndex(ele => {
+        return parseInt(ele['id']) === parseInt(id)
+      })
+      if (index !== -1)  state.invoices.splice(index, 1)
+      // console.log('editing', index)
+      // Math.floor(Math.random() * 100000000000000000)
+      state.invoices.push({ seller, po, company, taxRate, items, id, date, hasPaid, withInfo })
+      // if (payload.cb) {
+      // cb(id)
+      // }
+    },
     setHasBeenFetched(state, {payload}) {
       const {val =true} = payload
       state.hasBeenFetched = val
