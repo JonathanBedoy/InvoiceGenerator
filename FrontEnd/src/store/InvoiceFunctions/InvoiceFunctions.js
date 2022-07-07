@@ -207,6 +207,30 @@ const generateInventoryDropdownCategories = (inventory, attributes) => {
   });
 };
 
+const generatePrepulateEditInvoiceInfo = (invoices, invoiceId) => {
+
+  let currInvoice = getInvoiceWithId(invoiceId, invoices)
+  if (currInvoice === undefined) return currInvoice
+
+  return {
+    items: currInvoice.withInfo.items.map((ele) => {
+      return {
+        item: ele,
+        quantity: ele.quantity,
+        price: ele.price
+      }
+    }),
+    invoiceInfo: {
+      company: currInvoice.withInfo.company,
+      po: currInvoice.po,
+      seller: currInvoice.withInfo.seller,
+      taxRate: currInvoice.taxRate,
+      date: new Date(currInvoice.date),
+      dateVal: currInvoice.date
+    }
+  }
+}
+
 const getItemWithId = (id, itemList) => {
   return itemList.find((ele) => parseInt(ele.id) === parseInt(id));
 };
@@ -228,6 +252,7 @@ const getRandomInt = (max, min) => {
 };
 
 export {
+  generatePrepulateEditInvoiceInfo,
   generateInventoryDropdownCategories,
   getInvoicesList,
   generateInvoiceNumber,

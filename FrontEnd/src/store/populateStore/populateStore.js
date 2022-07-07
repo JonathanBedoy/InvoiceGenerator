@@ -250,7 +250,7 @@ export const addCompany = (newCompany, companies) => {
   };
 };
 
-export const addInvoice = (newInvoice, invoices) => {
+export const addInvoice = (newInvoice, invoices, edit) => {
   let userInfo = store.getState().user
 
   const {
@@ -314,7 +314,10 @@ export const addInvoice = (newInvoice, invoices) => {
     });
     updateInventoryQuantity(itemFormatted);
     // so that it will work in offline mode
-    dispatch(InvoiceActions.makeInvoice(newInvoiceData));
+    if (edit) {
+      dispatch(InvoiceActions.editInvoice(newInvoiceData));
+    }
+    else dispatch(InvoiceActions.makeInvoice(newInvoiceData));
   };
 };
 
