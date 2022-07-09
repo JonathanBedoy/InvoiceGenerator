@@ -1,0 +1,13 @@
+.button {
+  font-size: 27px;
+  /* font-weight: 900; */
+  user-select: none;
+  transition: 0.5s;
+}
+
+.button:hover {
+  color: green;
+  /* font-size: 28px; */
+  font-weight: 900;
+  cursor: pointer;
+}
