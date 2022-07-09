@@ -37,7 +37,7 @@ export const login = (user, pass) => {
     };
     let data = await postLogin();
     dispatch(UserActions.setLogginIn({loggingIn: false}))
-    console.log(data.data);
+    // console.log(data.data);
   };
 };
 export const checkIfLoggedIn = () => {
@@ -52,11 +52,11 @@ export const checkIfLoggedIn = () => {
       }
     };
     let data = await postLogin();
-    if (data.data.userId && data.data.userName) {
+    if (data && data.data.userId && data.data.userName) {
       dispatch(UserActions.setUserState({userName: data.data.userName, userId: data.data.userId}))
     }
     dispatch(UserActions.setLogginIn({loggingIn: false}))
-    console.log(data.data);
+    // console.log(data.data);
   };
 };
 

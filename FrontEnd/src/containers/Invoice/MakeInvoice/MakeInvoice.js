@@ -224,21 +224,40 @@ const MakeInvoice = (props) => {
     <Container className='m-0 p-0'>
       <SecondaryNavBar
         back={'/invoice'}
-        title={'Create Invoice'}
+        title={edit ? 'Edit Invoice' : 'Create Invoice'}
         // component1={editBtn}
         // component2={trashBtn}
       />
 
       <InvoiceInputSlot
         label='Company'
-        defaultValue={edit && invoiceInfo.company !== null ? {label: invoiceInfo.company.name, value:invoiceInfo.company} : undefined}
+        defaultValue={
+          edit && invoiceInfo.company !== null
+            ? { label: invoiceInfo.company.name, value: invoiceInfo.company }
+            : undefined
+        }
         valueUpdate={updateItem}
         options={companies}
         type='dropdown'
       />
-      <InvoiceInputSlot label='Seller' defaultValue={edit && invoiceInfo.seller !== null ? {label: invoiceInfo.seller.name, value:invoiceInfo.seller} : undefined} valueUpdate={updateItem} options={seller} type='dropdown' />
+      <InvoiceInputSlot
+        label='Seller'
+        defaultValue={
+          edit && invoiceInfo.seller !== null
+            ? { label: invoiceInfo.seller.name, value: invoiceInfo.seller }
+            : undefined
+        }
+        valueUpdate={updateItem}
+        options={seller}
+        type='dropdown'
+      />
 
-      <InvoiceInputSlot label='PO' defaultValue={edit ? invoiceInfo.po : undefined} valueUpdate={updateItem} type='text' />
+      <InvoiceInputSlot
+        label='PO'
+        defaultValue={edit ? invoiceInfo.po : undefined}
+        valueUpdate={updateItem}
+        type='text'
+      />
 
       <Row className={` mt-3 d-flex justify-content-center`}>
         <Col xs={4} sm={2} md={2} lg={1} className={` col-1  pr-0 text-right`}>
@@ -264,7 +283,12 @@ const MakeInvoice = (props) => {
           />
         </Col>
       </Row>
-      <InvoiceInputSlot label='Tax Rate'  defaultValue={edit ? invoiceInfo.taxRate : undefined} valueUpdate={updateItem} type='number' />
+      <InvoiceInputSlot
+        label='Tax Rate'
+        defaultValue={edit ? invoiceInfo.taxRate : undefined}
+        valueUpdate={updateItem}
+        type='number'
+      />
 
       <div className={`  mt-3 `}>{itemsToShow}</div>
 
@@ -281,10 +305,21 @@ const MakeInvoice = (props) => {
       </Row>
 
       <Row className={`mt-3 d-flex justify-content-center`}>
-        <Button click={generateInvoice} type='success'>
-          {' '}
-          Generate Invoice{' '}
-        </Button>
+        {edit ? (
+          <Col className={`mt-3 d-flex justify-content-center`}>
+            <Button className={` mr-2`} click={() => {props.history.push('/invoice/view/' + invoiceId)}} type='danger'>
+              Cancel
+            </Button>
+            <Button click={generateInvoice} type='primary'>
+              Save Changes
+            </Button>
+          </Col>
+        ) : (
+          <Button click={generateInvoice} type='success'>
+            {' '}
+            Generate Invoice{' '}
+          </Button>
+        )}
       </Row>
     </Container>
   )
