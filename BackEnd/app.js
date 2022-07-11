@@ -79,7 +79,7 @@ const {
   checkIfBoolean,
   checkIfNumber,
 } = require("./HelperFunctions/typeFormatter");
-const { login, verifyUserConnection } = require("./Database/Databases/login");
+const { login, verifyUserConnection, verifyUserConnectionAndReturnData } = require("./Database/Databases/login");
 // const getAllInvoices = require('./Database/databaseConnection')
 
 app.get("/items/:userID", cors(corsOptions), (req, res) => {
@@ -201,7 +201,7 @@ const attemptLogin = async (loginInfo, res, req) => {
     let userID = loginResult.userID;
     req.session.userID = userID;
     req.session.userName = loginInfo.user;
-    res.send({ data: { userId: userID, userName: loginInfo.user } });
+    res.send({ data: { userId: userID, userName: loginInfo.user, logo: loginResult.logo, invoiceLogo: loginResult.invoiceLogo} });
   }
   // console.log(response);
   res.status(response).end();
@@ -210,12 +210,17 @@ const attemptLogin = async (loginInfo, res, req) => {
 const verifyLogin = async (req, res) => {
   // console.log(req.sessionID, req.session.userID);
   if (req.session.userID && req.session.userName) {
-    let verified = await verifyUserConnection(
+    let verifiedInfo = await verifyUserConnectionAndReturnData(
       req.sessionID,
       req.session.userID
     );
+    // console.log(verifiedInfo.verifiedDoc)
+    // let verified = await verifyUserConnection(
+    //   req.sessionID,
+    //   req.session.userID
+    // );
     // console.log(verified);
-    if (!verified) {
+    if (verifiedInfo.verifiedDoc === false) {
       req.session.userID = false;
       req.session.userName = false;
       // console.log("not verified");
@@ -226,7 +231,7 @@ const verifyLogin = async (req, res) => {
       return;
     }
     res.send({
-      data: { userId: req.session.userID, userName: req.session.userName },
+      data: { userId: req.session.userID, userName: req.session.userName, logo: verifiedInfo.verifiedDoc.logo, invoiceLogo: verifiedInfo.verifiedDoc.invoiceLogo },
     });
     res.end();
   } else {
