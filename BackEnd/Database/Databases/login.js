@@ -11,7 +11,8 @@ const login = async (user, pass, socketID) => {
   if (userDoc && userDoc.password === pass) {
     let setRequest = await setUserConnection(socketID, userDoc.user_ID);
     if (setRequest) {
-      return { userID: userDoc.user_ID, statusCode: 200 };
+      console.log(userDoc.logo)
+      return { userID: userDoc.user_ID, logo: userDoc.logo, invoiceLogo: userDoc.invoiceLogo, statusCode: 200 };
     }
   }
   return { userID: false, statusCode: 400 };
@@ -41,6 +42,23 @@ const verifyUserConnection = (socketID, userID) => {
   });
 };
 
+const verifyUserConnectionAndReturnData = (socketID, userID) => {
+  const userIDFormatted = Number(userID);
+  return new Promise((resolve, reject) => {
+    userDB.find({ user_ID: userIDFormatted }, (err, doc) => {
+      let verifiedDoc = false
+      for (let i = 0; i < doc.length; i++) {
+        if (doc[i] && doc[i].socket_ID === socketID) {
+          verifiedDoc = doc[i];
+          break;
+        }
+      }
+      // verifiedDoc = false
+      err ? reject(err) : resolve({verifiedDoc});
+    });
+  });
+};
+
 const setUserConnection = (socketID, userId) => {
   const formattedUserId = Number(userId);
   const formattedSocketId = socketID;
@@ -58,5 +76,6 @@ const setUserConnection = (socketID, userId) => {
 };
 
 exports.verifyUserConnection = verifyUserConnection;
+exports.verifyUserConnectionAndReturnData = verifyUserConnectionAndReturnData;
 // exports.setUserConnection = setUserConnection;
 exports.login = login;

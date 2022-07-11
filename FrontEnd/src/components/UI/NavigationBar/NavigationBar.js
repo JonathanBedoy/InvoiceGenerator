@@ -14,6 +14,12 @@ import { useSelector } from "react-redux";
 // import NavDropdown from 'react-bootstrap/NavDropdown'
 
 const NavigationBar = (props) => {
+
+  const userInfo = useSelector((state) => state.user)
+  useEffect(() => {
+    console.log(userInfo)
+  }, [userInfo])
+  
   const breakpoint = useSelector((state) => state.breakpoint);
   const closeNavOnMobile = () => {
     // let element = 
@@ -35,7 +41,7 @@ const NavigationBar = (props) => {
       <Container>
         <Navbar.Brand as={Link} to="/">
           <img
-            src={Logo}
+            src={userInfo && userInfo.logo ? userInfo.logo : Logo}
             width="118"
             height="49"
             className="d-inline-block align-top"

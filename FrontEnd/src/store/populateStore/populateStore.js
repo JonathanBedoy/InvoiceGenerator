@@ -29,7 +29,8 @@ export const login = (user, pass) => {
       try {
         const response = await instance.post("/login",{user:user, pass:pass});
         if (response.data.data.userName && response.data.data.userId)
-          dispatch(UserActions.setUserState({userName: response.data.data.userName, userId: response.data.data.userId}))
+          console.log(response.data.data)
+          dispatch(UserActions.setUserState({userName: response.data.data.userName, userId: response.data.data.userId, logo:response.data.data.logo, invoiceLogo:response.data.data.invoiceLogo}))
         return response.data;
       } catch (error) {
         console.error(error);
@@ -53,7 +54,8 @@ export const checkIfLoggedIn = () => {
     };
     let data = await postLogin();
     if (data && data.data.userId && data.data.userName) {
-      dispatch(UserActions.setUserState({userName: data.data.userName, userId: data.data.userId}))
+      console.log(data.data)
+      dispatch(UserActions.setUserState({userName: data.data.userName, userId: data.data.userId, logo:data.data.logo, invoiceLogo:data.data.invoiceLogo}))
     }
     dispatch(UserActions.setLogginIn({loggingIn: false}))
     // console.log(data.data);

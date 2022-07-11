@@ -10,6 +10,7 @@ import { useSelector } from "react-redux";
 const Invoice = (props) => {
   const state = useSelector((state) => state);
   const breakpoint = useSelector(state => state.breakpoint)
+  const userLogo = useSelector((state) => state.user.invoiceLogo)
 
   // const [renderInvoice, setRenderInvoice] = useState(false)
 
@@ -86,7 +87,7 @@ const Invoice = (props) => {
             <Row>
               <Col>
                 <img
-                  src={Logo}
+                  src={userLogo ? userLogo : Logo}
                   height="75"
                   className=""
                   alt="On-Site Fasteners And Sons Logo"
