@@ -20,7 +20,7 @@ const SecondaryNavBar = (props) => {
         {props.title ? props.title : ''}
       </Col>
       {props.component4 ? (
-        <Col sm={4} xs={2} className={`${style.component1}  text-center text-md-center `}>
+        <Col sm={4} xs={2} className={``}>
           
         </Col>
       ) : ''}
