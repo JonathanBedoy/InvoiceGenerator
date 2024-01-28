@@ -4,7 +4,7 @@
 
 Inventory system with the capability of generating invoices and keeping track of invoices, inventory, and company debts. A single page application built using React Js and hosted on the [Node.js] network framework: Express. 
 
-### Try it out [here](https://inventory.jonathanbedoy.com)
+### Try it out [here](https://invoice.jonathanbedoy.com)
 
 ##### Guest Login: 
 ```
